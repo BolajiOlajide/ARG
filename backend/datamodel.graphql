@@ -1,0 +1,19 @@
+# alwayss deploy to Prisma whenever you change this file
+type Node {
+  id: ID! @id
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
+}
+
+type User implements Node {
+  name: String!
+  email: String!
+}
+
+type Item implements Node {
+  title: String!
+  description: String!
+  image: String
+  largeImage: String
+  price: Int!
+}

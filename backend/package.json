@@ -6,7 +6,7 @@
     "start": "nodemon -e js,graphql -x node src/index.js",
     "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
     "test": "jest",
-    "deploy": "prisma deploy --env-file variables.env",
+    "deploy": "prisma deploy",
     "playground": "graphql playground --dotenv .env",
     "start:dev": "npm-run-all --parallel dev playground"
   },
@@ -29,9 +29,7 @@
     "stripe": "^6.12.1"
   },
   "license": "MIT",
-  "repository": {
-    "url": "wesbos.com"
-  },
+  "repository": "https://github.com/BolajiOlajide/arg",
   "babel": {
     "presets": [
       "env"

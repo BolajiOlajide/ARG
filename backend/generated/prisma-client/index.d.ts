@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  item: (where?: ItemWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -38,6 +39,25 @@ export interface Prisma {
    * Queries
    */
 
+  item: (where: ItemWhereUniqueInput) => ItemNullablePromise;
+  items: (args?: {
+    where?: ItemWhereInput;
+    orderBy?: ItemOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Item>;
+  itemsConnection: (args?: {
+    where?: ItemWhereInput;
+    orderBy?: ItemOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ItemConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -63,6 +83,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createItem: (data: ItemCreateInput) => ItemPromise;
+  updateItem: (args: {
+    data: ItemUpdateInput;
+    where: ItemWhereUniqueInput;
+  }) => ItemPromise;
+  updateManyItems: (args: {
+    data: ItemUpdateManyMutationInput;
+    where?: ItemWhereInput;
+  }) => BatchPayloadPromise;
+  upsertItem: (args: {
+    where: ItemWhereUniqueInput;
+    create: ItemCreateInput;
+    update: ItemUpdateInput;
+  }) => ItemPromise;
+  deleteItem: (where: ItemWhereUniqueInput) => ItemPromise;
+  deleteManyItems: (where?: ItemWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -88,6 +124,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  item: (
+    where?: ItemSubscriptionWhereInput
+  ) => ItemSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -100,6 +139,24 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type ItemOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "largeImage_ASC"
+  | "largeImage_DESC"
+  | "price_ASC"
+  | "price_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -114,6 +171,110 @@ export type UserOrderByInput =
   | "createdAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type ItemWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ItemWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  largeImage_not?: Maybe<String>;
+  largeImage_in?: Maybe<String[] | String>;
+  largeImage_not_in?: Maybe<String[] | String>;
+  largeImage_lt?: Maybe<String>;
+  largeImage_lte?: Maybe<String>;
+  largeImage_gt?: Maybe<String>;
+  largeImage_gte?: Maybe<String>;
+  largeImage_contains?: Maybe<String>;
+  largeImage_not_contains?: Maybe<String>;
+  largeImage_starts_with?: Maybe<String>;
+  largeImage_not_starts_with?: Maybe<String>;
+  largeImage_ends_with?: Maybe<String>;
+  largeImage_not_ends_with?: Maybe<String>;
+  price?: Maybe<Int>;
+  price_not?: Maybe<Int>;
+  price_in?: Maybe<Int[] | Int>;
+  price_not_in?: Maybe<Int[] | Int>;
+  price_lt?: Maybe<Int>;
+  price_lte?: Maybe<Int>;
+  price_gt?: Maybe<Int>;
+  price_gte?: Maybe<Int>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ItemWhereInput[] | ItemWhereInput>;
+  OR?: Maybe<ItemWhereInput[] | ItemWhereInput>;
+  NOT?: Maybe<ItemWhereInput[] | ItemWhereInput>;
+}
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -183,6 +344,31 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export interface ItemCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description: String;
+  image?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  price: Int;
+}
+
+export interface ItemUpdateInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  image?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  price?: Maybe<Int>;
+}
+
+export interface ItemUpdateManyMutationInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  image?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  price?: Maybe<Int>;
+}
+
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
@@ -199,6 +385,17 @@ export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
 }
 
+export interface ItemSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ItemWhereInput>;
+  AND?: Maybe<ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput>;
+  OR?: Maybe<ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput>;
+  NOT?: Maybe<ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput>;
+}
+
 export interface UserSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -212,6 +409,131 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Item {
+  id: ID_Output;
+  title: String;
+  description: String;
+  image?: String;
+  largeImage?: String;
+  price: Int;
+  updatedAt: DateTimeOutput;
+  createdAt: DateTimeOutput;
+}
+
+export interface ItemPromise extends Promise<Item>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  largeImage: () => Promise<String>;
+  price: () => Promise<Int>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ItemSubscription
+  extends Promise<AsyncIterator<Item>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  largeImage: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ItemNullablePromise
+  extends Promise<Item | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  largeImage: () => Promise<String>;
+  price: () => Promise<Int>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ItemConnection {
+  pageInfo: PageInfo;
+  edges: ItemEdge[];
+}
+
+export interface ItemConnectionPromise
+  extends Promise<ItemConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ItemEdge>>() => T;
+  aggregate: <T = AggregateItemPromise>() => T;
+}
+
+export interface ItemConnectionSubscription
+  extends Promise<AsyncIterator<ItemConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ItemEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateItemSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ItemEdge {
+  node: Item;
+  cursor: String;
+}
+
+export interface ItemEdgePromise extends Promise<ItemEdge>, Fragmentable {
+  node: <T = ItemPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ItemEdgeSubscription
+  extends Promise<AsyncIterator<ItemEdge>>,
+    Fragmentable {
+  node: <T = ItemSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateItem {
+  count: Int;
+}
+
+export interface AggregateItemPromise
+  extends Promise<AggregateItem>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateItemSubscription
+  extends Promise<AsyncIterator<AggregateItem>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface User {
@@ -271,29 +593,6 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface UserEdge {
   node: User;
   cursor: String;
@@ -341,6 +640,68 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface ItemSubscriptionPayload {
+  mutation: MutationType;
+  node: Item;
+  updatedFields: String[];
+  previousValues: ItemPreviousValues;
+}
+
+export interface ItemSubscriptionPayloadPromise
+  extends Promise<ItemSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ItemPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ItemPreviousValuesPromise>() => T;
+}
+
+export interface ItemSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ItemSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ItemSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ItemPreviousValuesSubscription>() => T;
+}
+
+export interface ItemPreviousValues {
+  id: ID_Output;
+  title: String;
+  description: String;
+  image?: String;
+  largeImage?: String;
+  price: Int;
+  updatedAt: DateTimeOutput;
+  createdAt: DateTimeOutput;
+}
+
+export interface ItemPreviousValuesPromise
+  extends Promise<ItemPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  largeImage: () => Promise<String>;
+  price: () => Promise<Int>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ItemPreviousValuesSubscription
+  extends Promise<AsyncIterator<ItemPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  largeImage: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -408,6 +769,11 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -416,11 +782,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -436,6 +797,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Item",
     embedded: false
   }
 ];
