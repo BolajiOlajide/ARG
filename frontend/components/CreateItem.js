@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useMutation } from 'react-apollo';
 import Router from 'next/router';
 
@@ -10,13 +11,36 @@ import { CREATE_ITEM_MUTATION } from '../graphql';
 
 
 function CreateItem() {
-  const { bind: bindTitle, value: title, reset: resetTitle } = useInput('');
-  const { bind: bindDescription, value: description, reset: resetDescription } = useInput('');
-  const { bind: bindImage, value: image, reset: resetImage } = useInput('');
-  const { bind: bindLargeImage, value: largeImage, reset: resetLargeImage } = useInput('');
-  const { bind: bindPrice, value: price, reset: resetPrice } = useInput(0);
-
   const [createItem, { loading, error }] = useMutation(CREATE_ITEM_MUTATION);
+
+  const uploadImage = async e => {
+    const { files: [file] } = e.target;
+
+    const data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', 'sickfits');
+
+    if (file) {
+      const url = 'https://api.cloudinary.com/v1_1/proton/image/upload';
+      const method = 'POST'
+      const _response = await fetch(url, { method, body: data });
+      const response = await _response.json();
+
+      const {
+        secure_url: imageLink,
+        eager: [{secure_url: largeImage}]
+      } = response;
+
+      setImage(imageLink);
+      setLargeImage(largeImage);
+    }
+  }
+
+  const { bind: bindTitle, value: title } = useInput('');
+  const { bind: bindDescription, value: description } = useInput('');
+  const { bind: bindPrice, value: price } = useInput(0);
+  const [image, setImage] = useState('');
+  const [largeImage, setLargeImage] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -66,6 +90,19 @@ function CreateItem() {
             required
             {...bindDescription}
           />
+        </label>
+
+        <label htmlFor="file">
+          Image
+          <input
+            type="file"
+            name="file"
+            id="file"
+            placeholder="Upload an Image"
+            required
+            onChange={uploadImage}
+          />
+          {image && <img width="200" src={image} alt="Image to be submitted" />}
         </label>
 
         <button type="submit">Submit</button>
