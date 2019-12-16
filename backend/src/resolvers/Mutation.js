@@ -5,6 +5,13 @@ const Mutations = {
     }, info);
 
     return item;
+  },
+  updateItem(_, args, context, info) {
+    const { id, ...data } = args;
+    return context.db.mutation.updateItem({
+      where: { id },
+      data
+    }, info);
   }
 };
 

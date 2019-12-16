@@ -23,7 +23,7 @@ function Item({ item }) {
           pathname: 'item',
           query: { id: item.id }
         }}>
-          {item.title}
+          <a>{item.title}</a>
         </Link>
       </Title>
 
@@ -36,7 +36,7 @@ function Item({ item }) {
           pathname: "update",
           query: { id: item.id }
         }}>
-          Edit ✏️
+          <a>Edit ✏️</a>
         </Link>
         <ItemCTA>Add to Cart</ItemCTA>
         <ItemCTA>Delete</ItemCTA>
