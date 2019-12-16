@@ -8,20 +8,7 @@ import Item from './Item';
 
 // utils
 import { queryOpts } from '../config';
-
-
-const ALL_ITEMS_QUERY = gql`
-  query ALL_ITEMS_QUERY {
-    items {
-      id
-      title
-      description
-      price
-      image
-      largeImage
-    }
-  }
-`;
+import { ALL_ITEMS_QUERY } from '../graphql'
 
 const Center = styled.div`
   text-align: center;
