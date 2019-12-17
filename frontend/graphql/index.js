@@ -69,6 +69,7 @@ query SINGLE_ITEM_QUERY($id: ID!) {
     title
     description
     price
+    largeImage
   }
 }
 `;

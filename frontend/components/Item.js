@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import styled from 'styled-components';
 
 import Title from '../styles/Title';
 import ItemStyles from '../styles/ItemStyles';
