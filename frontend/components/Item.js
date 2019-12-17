@@ -1,18 +1,17 @@
 import Link from 'next/link';
+import styled from 'styled-components';
+
 import Title from '../styles/Title';
 import ItemStyles from '../styles/ItemStyles';
 import PriceTag from '../styles/PriceTag';
-import styled from 'styled-components';
+import ItemBtn from '../styles/ItemBtn';
 
 // utils
 import formatMoney from '../lib/formatMoney';
 
+// components
+import DeleteItem from './DeleteItem';
 
-const ItemCTA = styled.button`
-  cursor: pointer;
-  font-size: 1rem;
-  color: #393939;
-`;
 
 function Item({ item }) {
   return (
@@ -38,8 +37,8 @@ function Item({ item }) {
         }}>
           <a>Edit ✏️</a>
         </Link>
-        <ItemCTA>Add to Cart</ItemCTA>
-        <ItemCTA>Delete</ItemCTA>
+        <ItemBtn>Add to Cart</ItemBtn>
+        <DeleteItem id={item.id} />
       </div>
     </ItemStyles>
   );

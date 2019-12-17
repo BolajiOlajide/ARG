@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 const DropDown = styled.div`
   position: absolute;
@@ -30,6 +30,10 @@ const glow = keyframes`
     box-shadow: 0 0 10px 1px yellow;
   }
 `;
+
+// const glowAnimation = props => css`
+// ${glow} ${props.animationLength} ${props.animationTimingFunction} infinite alternate;
+// `;
 
 const SearchStyles = styled.div`
   position: relative;
