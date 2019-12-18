@@ -27,7 +27,9 @@ function Item({ item }) {
 
       <PriceTag>{formatMoney(item.price)}</PriceTag>
 
-      <p>{item.description}</p>
+      <p>
+        {item.description.slice(0, 100)} {(item.description.length > 100) && ' ...'}
+      </p>
 
       <div className="buttonList">
         <Link href={{

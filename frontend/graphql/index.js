@@ -81,3 +81,13 @@ mutation DELETE_ITEM_MUTATION($id: ID!) {
   }
 }
 `;
+
+export const PAGINATION_QUERY = gql`
+query PAGINATION_QUERY {
+  itemsConnection {
+    aggregate {
+      count
+    }
+  }
+}
+`;

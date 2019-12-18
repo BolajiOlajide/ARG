@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // components
 import Spinner from '../components/Spinner';
 import Item from './Item';
+import Pagination from './Pagination';
 
 // utils
 import { queryOpts } from '../config';
@@ -22,7 +23,7 @@ const ItemList = styled.div`
   margin: 0 auto;
 `;
 
-function Items() {
+function Items({ page }) {
   const { loading, error, data } = useQuery(ALL_ITEMS_QUERY, queryOpts);
 
   if (loading) return <Spinner />;
@@ -30,9 +31,11 @@ function Items() {
 
   return (
     <Center>
+      <Pagination page={page} />
       <ItemList>
         {data.items.map(item => <Item key={item.id} item={item} />)}
       </ItemList>
+      <Pagination page={page} />
     </Center>
   )
 }
