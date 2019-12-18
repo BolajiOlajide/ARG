@@ -1,19 +1,32 @@
-# alwayss deploy to Prisma whenever you change this file
-type Node {
+# always deploy to Prisma whenever you change this file
+enum Permission {
+  ADMIN
+  USER
+  ITEMCREATE
+  ITEMDELETE
+  ITEMUPDATE
+  PERMISSIONUPDATE
+}
+
+type User {
   id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission] @scalarList(strategy: RELATION)
   updatedAt: DateTime! @updatedAt
   createdAt: DateTime! @createdAt
 }
 
-type User implements Node {
-  name: String!
-  email: String!
-}
-
-type Item implements Node {
+type Item {
+  id: ID! @id
   title: String!
   description: String!
   image: String
   largeImage: String
   price: Int!
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
 }
