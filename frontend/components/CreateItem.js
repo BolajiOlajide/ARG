@@ -7,11 +7,16 @@ import Error from './ErrorMessage';
 
 import Form from '../styles/Form';
 import { useInput } from '../hooks';
-import { CREATE_ITEM_MUTATION } from '../graphql';
+import { CREATE_ITEM_MUTATION, ALL_ITEMS_QUERY } from '../graphql';
 
 
 function CreateItem() {
-  const [createItem, { loading, error }] = useMutation(CREATE_ITEM_MUTATION);
+  const [createItem, { loading, error }] = useMutation(CREATE_ITEM_MUTATION, {
+    refetchQueries: [{
+      query: ALL_ITEMS_QUERY,
+      variables: { skip: 0 }
+    }]
+  });
 
   const uploadImage = async e => {
     const { files: [file] } = e.target;

@@ -8,7 +8,7 @@ import Item from './Item';
 import Pagination from './Pagination';
 
 // utils
-import { queryOpts } from '../config';
+import { queryOpts, perPage } from '../config';
 import { ALL_ITEMS_QUERY } from '../graphql'
 
 const Center = styled.div`
@@ -24,7 +24,11 @@ const ItemList = styled.div`
 `;
 
 function Items({ page }) {
-  const { loading, error, data } = useQuery(ALL_ITEMS_QUERY, queryOpts);
+  const { loading, error, data } = useQuery(ALL_ITEMS_QUERY, {
+    ...queryOpts,
+    variables: { skip: (page * perPage) - perPage },
+    // fetchPolicy: "network-only" // cool but you lose the adv. of caching
+  });
 
   if (loading) return <Spinner />;
   if (error) return `Error! ${error.message}`;
