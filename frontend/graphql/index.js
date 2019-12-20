@@ -92,3 +92,13 @@ query PAGINATION_QUERY {
   }
 }
 `;
+
+export const SIGNUP_MUTATION = gql`
+mutation SIGNUP_MUTATION($name: String!, $password: String!, $email: String!) {
+  signup(name: $name, password: $password, email: $email) {
+    id
+    name
+    email
+  }
+}
+`;
