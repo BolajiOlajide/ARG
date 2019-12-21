@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import Signup from '../components/Signup';
 import Signin from '../components/Signin';
+import RequestReset from '../components/RequestReset';
 
 const Columns = styled.section`
   display: grid;
@@ -13,5 +14,6 @@ export default function SignupPage() {
   return <Columns>
     <Signup />
     <Signin />
+    <RequestReset />
   </Columns>;
 }
