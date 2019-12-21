@@ -140,6 +140,14 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Permission =
+  | "ADMIN"
+  | "USER"
+  | "ITEMCREATE"
+  | "ITEMDELETE"
+  | "ITEMUPDATE"
+  | "PERMISSIONUPDATE";
+
 export type ItemOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -157,14 +165,6 @@ export type ItemOrderByInput =
   | "updatedAt_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC";
-
-export type Permission =
-  | "ADMIN"
-  | "USER"
-  | "ITEMCREATE"
-  | "ITEMDELETE"
-  | "ITEMUPDATE"
-  | "PERMISSIONUPDATE";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -269,6 +269,7 @@ export interface ItemWhereInput {
   price_lte?: Maybe<Int>;
   price_gt?: Maybe<Int>;
   price_gte?: Maybe<Int>;
+  user?: Maybe<UserWhereInput>;
   updatedAt?: Maybe<DateTimeInput>;
   updatedAt_not?: Maybe<DateTimeInput>;
   updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -289,11 +290,6 @@ export interface ItemWhereInput {
   OR?: Maybe<ItemWhereInput[] | ItemWhereInput>;
   NOT?: Maybe<ItemWhereInput[] | ItemWhereInput>;
 }
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
 
 export interface UserWhereInput {
   id?: Maybe<ID_Input>;
@@ -395,6 +391,11 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
 export interface ItemCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
@@ -402,22 +403,12 @@ export interface ItemCreateInput {
   image?: Maybe<String>;
   largeImage?: Maybe<String>;
   price: Int;
+  user: UserCreateOneInput;
 }
 
-export interface ItemUpdateInput {
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  image?: Maybe<String>;
-  largeImage?: Maybe<String>;
-  price?: Maybe<Int>;
-}
-
-export interface ItemUpdateManyMutationInput {
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  image?: Maybe<String>;
-  largeImage?: Maybe<String>;
-  price?: Maybe<Int>;
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserCreateInput {
@@ -434,7 +425,23 @@ export interface UserCreatepermissionsInput {
   set?: Maybe<Permission[] | Permission>;
 }
 
-export interface UserUpdateInput {
+export interface ItemUpdateInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  image?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  price?: Maybe<Int>;
+  user?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
   name?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
@@ -445,6 +452,28 @@ export interface UserUpdateInput {
 
 export interface UserUpdatepermissionsInput {
   set?: Maybe<Permission[] | Permission>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface ItemUpdateManyMutationInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  image?: Maybe<String>;
+  largeImage?: Maybe<String>;
+  price?: Maybe<Int>;
+}
+
+export interface UserUpdateInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  resetToken?: Maybe<String>;
+  resetTokenExpiry?: Maybe<Float>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -500,6 +529,7 @@ export interface ItemPromise extends Promise<Item>, Fragmentable {
   image: () => Promise<String>;
   largeImage: () => Promise<String>;
   price: () => Promise<Int>;
+  user: <T = UserPromise>() => T;
   updatedAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
 }
@@ -513,6 +543,7 @@ export interface ItemSubscription
   image: () => Promise<AsyncIterator<String>>;
   largeImage: () => Promise<AsyncIterator<String>>;
   price: () => Promise<AsyncIterator<Int>>;
+  user: <T = UserSubscription>() => T;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -526,6 +557,59 @@ export interface ItemNullablePromise
   image: () => Promise<String>;
   largeImage: () => Promise<String>;
   price: () => Promise<Int>;
+  user: <T = UserPromise>() => T;
+  updatedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions: Permission[];
+  updatedAt: DateTimeOutput;
+  createdAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
+  permissions: () => Promise<Permission[]>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
+  permissions: () => Promise<Permission[]>;
   updatedAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
 }
@@ -605,58 +689,6 @@ export interface AggregateItemSubscription
   extends Promise<AsyncIterator<AggregateItem>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface User {
-  id: ID_Output;
-  name: String;
-  email: String;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions: Permission[];
-  updatedAt: DateTimeOutput;
-  createdAt: DateTimeOutput;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<Float>;
-  permissions: () => Promise<Permission[]>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  resetToken: () => Promise<AsyncIterator<String>>;
-  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<Float>;
-  permissions: () => Promise<Permission[]>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
 }
 
 export interface UserConnection {
@@ -873,6 +905,11 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+*/
+export type Float = number;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -886,11 +923,6 @@ export type DateTimeOutput = string;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
-*/
-export type Float = number;
 
 export type Long = string;
 

@@ -27,7 +27,7 @@ function Pagination({ page }) {
       <a className="prev" aria-disabled={page <= 1}> ← Prev</a>
     </Link>
 
-    <p>You're on page {page} of {pages}</p>
+    <p>You're on page {page} of {pages || 1}</p>
     <p>{count} Items Total</p>
 
     <Link prefetch href={{

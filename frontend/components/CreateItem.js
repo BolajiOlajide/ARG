@@ -12,10 +12,10 @@ import { CREATE_ITEM_MUTATION, ALL_ITEMS_QUERY } from '../graphql';
 
 function CreateItem() {
   const [createItem, { loading, error }] = useMutation(CREATE_ITEM_MUTATION, {
-    refetchQueries: [{
-      query: ALL_ITEMS_QUERY,
-      variables: { skip: 0 }
-    }]
+    // refetchQueries: [{
+    //   query: ALL_ITEMS_QUERY,
+    //   variables: { skip: 0 }
+    // }]
   });
 
   const uploadImage = async e => {

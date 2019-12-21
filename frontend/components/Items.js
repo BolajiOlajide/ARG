@@ -27,7 +27,7 @@ function Items({ page }) {
   const { loading, error, data } = useQuery(ALL_ITEMS_QUERY, {
     ...queryOpts,
     variables: { skip: (page * perPage) - perPage },
-    // fetchPolicy: "network-only" // cool but you lose the adv. of caching
+    fetchPolicy: "network-only" // cool but you lose the adv. of caching
   });
 
   if (loading) return <Spinner />;
