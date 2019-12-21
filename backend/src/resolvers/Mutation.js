@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 
+const { transport, makeANiceEmail } = require('../utils/mail');
+
 
 const Mutations = {
   async createItem(_, args, context, info) {
@@ -91,10 +93,24 @@ const Mutations = {
     const resetToken = (await promisifiedRandomBytes(20)).toString('hex');
     const resetTokenExpiry = Date.now() + 3600000;
 
-    const res = await context.db.mutation.updateUser({
+    await context.db.mutation.updateUser({
       where: { email },
       data: { resetToken, resetTokenExpiry }
     });
+
+    const mailText = `Your password reset token is here.
+
+<a href="${process.env.FRONTEND_URL}/reset?token=${resetToken}">
+  Click here to reset your password
+</a>
+    `;
+
+    const mailResponse = transport.sendMail({
+      from: 'coop@proton.com',
+      to: user.email,
+      subject: 'Your Password reset token!',
+      html: makeANiceEmail(mailText)
+    })
 
     return { message: 'Password reset done!' };
   },
