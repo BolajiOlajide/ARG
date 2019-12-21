@@ -102,3 +102,14 @@ mutation SIGNUP_MUTATION($name: String!, $password: String!, $email: String!) {
   }
 }
 `;
+
+export const CURRENT_USER_QUERY = gql`
+  query me {
+    me {
+      id
+      email
+      name
+      permissions
+    }
+  }
+`;

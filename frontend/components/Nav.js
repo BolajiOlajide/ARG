@@ -1,9 +1,11 @@
 import Link from 'next/link';
 
+import User from './User';
 import NavStyle from '../styles/NavStyles';
 
 const Nav = () => (
   <NavStyle>
+    <User />
     <Link href="/items">
       <a>Shop</a>
     </Link>
