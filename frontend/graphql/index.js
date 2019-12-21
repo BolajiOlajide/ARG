@@ -113,3 +113,21 @@ export const CURRENT_USER_QUERY = gql`
     }
   }
 `;
+
+export const SIGNIN_MUTATION = gql`
+mutation SIGNIN_MUTATION($password: String!, $email: String!) {
+  signin(password: $password, email: $email) {
+    id
+    name
+    email
+  }
+}
+`;
+
+export const SIGNOUT_MUTATION = gql`
+mutation SIGNOUT_MUTATION {
+  signout {
+    message
+  }
+}
+`;

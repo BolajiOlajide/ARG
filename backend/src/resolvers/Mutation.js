@@ -29,7 +29,6 @@ const Mutations = {
     return context.db.mutation.deleteItem({ where }, info);
   },
   async signup(_, args, context, info) {
-    const { name } = args;
     const email = args.email.toLowerCase();
     const password = await bcrypt.hash(args.password, 10);
 
@@ -46,6 +45,36 @@ const Mutations = {
     });
 
     return user;
+  },
+  async signin(_, args, context, __) {
+    const { password } = args;
+    const email = args.email.toLowerCase();
+
+    const user = await context.db.query.user({ where: { email } });
+
+    if (!user) {
+      throw new Error(`No such user found for email ${email}`);
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      throw new Error('Invalid password');
+    }
+
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+    context.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365
+    });
+
+    return user;
+  },
+  signout(_, __, context, ___) {
+    context.response.clearCookie('token');
+
+    return { message: 'Goodbye!' };
   }
 };
 

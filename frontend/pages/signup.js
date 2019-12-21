@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import Signup from '../components/Signup';
+import Signin from '../components/Signin';
 
 const Columns = styled.section`
   display: grid;
@@ -11,7 +12,6 @@ const Columns = styled.section`
 export default function SignupPage() {
   return <Columns>
     <Signup />
-    <Signup />
-    <Signup />
+    <Signin />
   </Columns>;
 }

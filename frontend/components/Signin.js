@@ -1,29 +1,27 @@
 import { useMutation } from 'react-apollo';
 
-import { SIGNUP_MUTATION, CURRENT_USER_QUERY } from '../graphql';
+import { SIGNIN_MUTATION, CURRENT_USER_QUERY } from '../graphql';
 import Form from '../styles/Form';
 import Error from '../components/ErrorMessage';
 import { useInput } from '../hooks';
 
 
-function Signup() {
-  const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION, {
+function Signin() {
+  const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }]
   });
 
   const { bind: bindEmail, value: email, reset: resetEmail } = useInput('');
-  const { bind: bindName, value: name, reset: resetName } = useInput('');
   const { bind: bindPassword, value: password, reset: resetPassword } = useInput('');
 
   const onSubmit = async e => {
     e.preventDefault();
 
-    const variables = { name, email, password };
+    const variables = { email, password };
     try {
-      await signUp({ variables });
+      await signIn({ variables });
     } finally {
       resetEmail();
-      resetName();
       resetPassword();
     }
   }
@@ -32,7 +30,7 @@ function Signup() {
     <Form method='POST' onSubmit={onSubmit}>
       <Error error={error} />
       <fieldset disabled={loading} aria-busy={loading}>
-        <h2>Signup for An Account</h2>
+        <h2>Signin for An Account</h2>
         <label htmlFor="email">
           Email
           <input
@@ -42,18 +40,6 @@ function Signup() {
             placeholder="email"
             required
             {...bindEmail}
-          />
-        </label>
-
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="name"
-            required
-            {...bindName}
           />
         </label>
 
@@ -69,10 +55,10 @@ function Signup() {
           />
         </label>
 
-        <button type="submit">Signup</button>
+        <button type="submit">Signin</button>
       </fieldset>
     </Form>
   );
 }
 
-export default Signup;
+export default Signin;
