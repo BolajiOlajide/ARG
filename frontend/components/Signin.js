@@ -30,7 +30,7 @@ function Signin() {
     <Form method='POST' onSubmit={onSubmit}>
       <Error error={error} />
       <fieldset disabled={loading} aria-busy={loading}>
-        <h2>Signin for An Account</h2>
+        <h2>Sign into your account!</h2>
         <label htmlFor="email">
           Email
           <input

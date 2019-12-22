@@ -17,7 +17,7 @@ function Pagination({ page }) {
 
   return <PaginationStyles>
     <Head>
-      <title>Sick Fits | Page {page} of {pages}</title>
+      <title>Sick Fits | Page {page} of {pages || 1}</title>
     </Head>
 
     <Link prefetch href={{

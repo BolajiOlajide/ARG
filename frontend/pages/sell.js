@@ -1,5 +1,8 @@
-import CreateItem from '../components/CreateItem'
+import CreateItem from '../components/CreateItem';
+import PleaseSignIn from '../components/PleaseSignIn';
 
 export default function Sell() {
-  return <CreateItem />
+  return (<PleaseSignIn>
+    <CreateItem />
+  </PleaseSignIn>);
 }
