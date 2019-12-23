@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from 'react-apollo';
 
 import Error from './ErrorMessage';
@@ -16,17 +17,35 @@ const possiblePermissions = [
   'PERMISSIONUPDATE'
 ];
 
-const User = ({ user }) => {
+const UserPermissions = ({ user }) => {
+  const [permissions, setPermissions] = useState(user.permissions);
+
+  function handlePermissionChange(e) {
+    const checkbox = e.target;
+    let updatedPermissions = [...permissions];
+
+    if (checkbox.checked) updatedPermissions.push(checkbox.value);
+    else updatedPermissions = updatedPermissions.filter(p => p !== checkbox.value);
+
+    setPermissions(updatedPermissions);
+  }
+
   return <tr>
     <td>{user.name}</td>
     <td>{user.email}</td>
-    {possiblePermissions.map(permission => (
-      <td>
+    {possiblePermissions.map((permission, index) => (
+      <td key={index}>
         <label htmlFor={`${user.id}-permission-${permission}`}>
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={permissions.includes(permission)}
+            value={permission}
+            onChange={handlePermissionChange}
+          />
         </label>
       </td>
     ))}
+    <td><SickButton>UPDATE</SickButton></td>
   </tr>;
 }
 
@@ -41,13 +60,13 @@ const Permissions = () => {
       <tr>
         <th>Name</th>
         <th>Email</th>
-        {possiblePermissions.map(permission => <th>{permission}</th>)}
+        {possiblePermissions.map((permission, index) => <th key={index}>{permission}</th>)}
         <th>👇</th>
       </tr>
     </thead>
 
     <tbody>
-      {data.users.map(user => <User user={user} />)}
+      {data.users.map(user => <UserPermissions user={user} key={user.id} />)}
     </tbody>
   </Table>
 };

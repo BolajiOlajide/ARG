@@ -15,6 +15,7 @@ const SickButton = styled.button`
   &[disabled] {
     opacity: 0.5;
   }
+  cursor: pointer;
 `;
 
 export default SickButton;
