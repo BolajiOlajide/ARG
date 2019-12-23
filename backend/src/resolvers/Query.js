@@ -1,5 +1,7 @@
 const { forwardTo } = require('prisma-binding');
 
+const { hasPermission } = require('../utils/permissions');
+
 
 const Query = {
   // forward this resolver directly to Prisma
@@ -15,6 +17,15 @@ const Query = {
     return context.db.query.user({
       where: { id: userId }
     }, info);
+  },
+  users: (_, __, context, info) => {
+    const { userId, user } = context.request;
+
+    if (!userId) throw new Error('you must be logged in to run this query!');
+
+    hasPermission(user, ['ADMIN', 'PERMISSIONUPDATE']);
+
+    return context.db.query.users({}, info);
   }
 };
 

@@ -153,3 +153,14 @@ mutation RESET_PASSWORD_MUTATION(
   }
 }
 `;
+
+export const ALL_USERS_QUERY = gql`
+query ALL_USERS_QUERY {
+  users {
+    id
+    name
+    email
+    permissions
+  }
+}
+`;
