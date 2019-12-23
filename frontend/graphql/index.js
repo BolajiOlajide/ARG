@@ -164,3 +164,17 @@ query ALL_USERS_QUERY {
   }
 }
 `;
+
+export const UPDATE_PERMISSON_MUTATION = gql`
+mutation UPDATE_PERMISSON_MUTATION(
+  $permissions: [Permission]
+  $userId: ID!
+) {
+  updatePermissions(permissions: $permissions, userId: $userId) {
+    id
+    name
+    email
+    permissions
+  }
+}
+`;

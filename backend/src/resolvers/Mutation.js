@@ -4,6 +4,7 @@ const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 
 const { transport, makeANiceEmail } = require('../utils/mail');
+const { hasPermission } = require('../utils/permissions');
 
 
 const Mutations = {
@@ -154,6 +155,19 @@ const Mutations = {
     });
 
     return updatedUser;
+  },
+  async updatePermissions(_, args, ctx, info) {
+    const { userId, user } = ctx.request;
+    const { permissions } = args
+
+    if (!userId) throw new Error('You must be logged in!');
+
+    hasPermission(user, ['ADMIN', 'PERMISSIONUPDATE']);
+
+    return ctx.db.mutation.updateUser({
+      data: { permissions: { set: permissions } },
+      where: { id: args.userId }
+    }, info);
   }
 };
 
