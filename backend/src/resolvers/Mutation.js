@@ -37,7 +37,9 @@ const Mutations = {
     const item = await context.db.query.item({ where }, `{
       id
       title
-      user
+      user {
+        id
+      }
     }`);
 
     const acceptablePermissions = ['ADMIN', 'ITEMDELETE']
