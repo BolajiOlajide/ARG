@@ -20,7 +20,7 @@ function DeleteItem({ id }) {
   const onClick = () => {
     if (confirm('Are you sure you want to delete this item?')) {
       const variables = { id };
-      return deleteItem({ variables });
+      return deleteItem({ variables }).catch(err => alert(err.message));
     }
   }
 
