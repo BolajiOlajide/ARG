@@ -178,3 +178,15 @@ mutation UPDATE_PERMISSON_MUTATION(
   }
 }
 `;
+
+export const LOCAL_STATE_QUERY = gql`
+query {
+  cartOpen @client
+}
+`;
+
+export const TOGGLE_CART_MUTATION = gql`
+mutation {
+  toggleCart @client
+}
+`;
